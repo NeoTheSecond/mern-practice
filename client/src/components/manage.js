@@ -1,7 +1,6 @@
 import React from 'react';
 import ProductCreator from './productCreator';
-import Designer from './Designer';
-// import Test from './Test';
+import Test from './Test';
 import {
     Container,
     ListGroup,
@@ -21,8 +20,6 @@ export default class Manage extends React.Component {
                 <ProductCreator/>
                 {/* <Test/> */}
                 <Products/>
-                {/* <Designer/> */}
-
             </div>
         )
     }

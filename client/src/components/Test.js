@@ -1,76 +1,85 @@
-// import React from 'react';
-// import { Button } from 'reactstrap';
-// import Form from './Form';
-// export default class Test extends React.Component {
-//     constructor() {
-//         super()
-//         this.state = {
-//             custom: false
-//         }
-//         this.handleAddField = this.handleAddField.bind(this)
-//     }
-//     handleAddField(){
-//         this.setState({
-//             custom: true
-//         })
-//     }
-//     render(){
-//          if (this.state.custom){
-//              return <input type="text" placeholder="type in something"/>
-//          }
-//         const customFields = <div>
-//             <input type="text" placeholder="name"/>
-//             <input type="text" placeholder="price"/>
-//             <input type="file"/>
-//         </div>
-//
-//
-//         return(
-//             <div>
-//                 <Button onClick={this.handleAddField}>Add Field</Button>
-//                 { this.state.custom && customFields }
-//                 <hr/>
-//                 <Button>Submit</Button>
-//             </div>
-//         )
-//     }
-// }
-import { Button } from 'reactstrap';
 import React from 'react';
-import {Form, Text} from 'react-form';
-export default class DynamicForm extends React.Component {
-    constructor(props) {
-        super(props);
+import {Button} from 'reactstrap';
+import Form from './Form';
+export default class Test extends React.Component {
+    constructor() {
+        super()
         this.state = {
-            submittedValues: null
-        };
-        this.handleSubmit = this.handleSubmit.bind(this);
+            name: "",
+            img: "",
+            customizeOptions: [
+                {
+                    name: "",
+                    img: ""
+                }
+            ]
+        }
+        this.handleAddField = this.handleAddField.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
-    handleSubmit(submittedValues) {
-        this.setState({submittedValues: submittedValues})
-        console.log(this.state.submittedValues)
+    handleAddField = (e) => {
+        this.setState((prevState) => ({
+            customizeOptions: [...prevState.customizeOptions, {
+                    name: "",
+                    img: ""
+                }
+            ]
+        }));
+    }
+    handleChange = (e) => {
+        if (["name", "img"].includes(e.target.className)) {
+            let customizeOptions = [...this.state.customizeOptions]
+            customizeOptions[e.target.dataset.id][e.target.className] = e.target.value
+            this.setState({
+                customizeOptions
+            }, () => console.log(this.state.customizeOptions))
+        } else {
+            this.setState({
+                [e.target.name]: e.target.value
+            })
+        }
+    }
+    handleSubmit = (e) => {
+        e.preventDefault()
     }
     render() {
+        let {customizeOptions} = this.state
         return (<div>
-            <Form onSubmit={this.handleSubmit}>
-                {
-                    formApi => (<div>
-                        <form onSubmit={formApi.submitForm} id="dynamic-form">
-                            <label>Name</label>
-                            <Text field="name"/> {
-                                formApi.values.customizeOptions && formApi.values.customizeOptions.map((customizeOption, i) => (<div key={`customizeOption{i}`}>
-                                    <label>Customize Option</label>
-                                    <Text field={['customizeOptions', i]} id={`customizeOption-${i}`}/>
-                                    <input type="file" />
-                                    <Button onClick={() => formApi.removeValue('customizeOptions', i)} type="button" color="danger">Remove</Button>
-                                </div>))
-                            }
-                            <Button type="submit" color="success" >Submit</Button>
-                        </form>
-                        <Button onClick={() => formApi.addValue('customizeOptions', '')} type="button" >Add Customize Options</Button>
-                    </div>)
+            <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
+                <label>Name</label>
+                <input type="text" name="name"/>
+                <br/>
+                <label>Image</label>
+                <input type="file" name="img"/>
+                <br/>
+                <button onClick={this.handleAddField}>Add Customize Option</button>
+                <hr/> {
+                    customizeOptions.map((customizeOption, index) => {
+                        let customizeOptionId = `customizeOption-${index}`, imgId = `age-${index}`
+                        return (
+                            <div key={index}>
+                <label htmlFor={customizeOption}>{`Customize Option #${index + 1}`}</label>
+                <input
+                  type="text"
+                  name={customizeOption}
+                  data-id={index}
+                  id={customizeOption}
+                  className="name"
+                />
+                <label htmlFor={imgId}>Image</label>
+                <input
+                  type="file"
+                  name={imgId}
+                  data-id={index}
+                  id={imgId}
+                  className="img"
+                />
+              </div>
+                        )
+                    })
                 }
-            </Form>
-        </div>);
+                <Button onClick={this.handleSubmit}>Submit</Button>
+            </form>
+        </div>)
     }
 }

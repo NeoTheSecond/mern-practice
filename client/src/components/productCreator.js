@@ -9,24 +9,16 @@ export default class ProductCreator extends React.Component {
             productPrice: '',
             productImageURL: '',
             sale: '',
-            fileSelected: null
+            fileSelected: "",
+            img: "",
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        this.handleFile = this.handleFile.bind(this)
-        this.createUI = this.createUI.bind(this)
     }
-    handleFile(event) {
-        const file= event.target.files
-        this.setState({
-            fileSelected: event.target.files[0],
-            // file: URL.createObjectURL(event.target.files[0])
-        })
-
-    }
-    handleSubmit(){
+    handleSubmit(event){
+        event.preventDefault()
         const formData = new FormData();
-        formData.append("file", this.state.fileSelected);
+        formData.append("file", this.state.img);
         formData.append("upload_preset", "oxljmzfc"); // Replace the preset name with your own
         formData.append("api_key", "915351483667299"); // Replace API key with your own Cloudinary key
         formData.append("timestamp", (Date.now() / 1000) | 0);
@@ -60,36 +52,31 @@ export default class ProductCreator extends React.Component {
         })
 }
     handleChange(event) {
-        this.setState({
-            [event.target.name]: event.target.value
-        })
+        if(event.target.name !== "img"){
+            this.setState({
+                [event.target.name]: event.target.value
+            })
+        } else{
+            this.setState({
+                img: event.target.files[0]
+            })
+        }
     }
-    createUI(){
-        return(
-            <div>
-                <Input type='text'/>
-                <Input type='file'/>
-            </div>
-        )
-    }
-    // handleSubmit(event) {
-    //     axios.post('api/products', {name: this.state.productName}).then(res => console.log(res)).catch(err => console.log(err))
-    // }
     render() {
         return (
             <Container>
-            <Form>
+            <Form onChange={this.handleChange} onSubmit={this.handleSubmit}>
                 <FormGroup>
                     <Label>Product Name</Label>
-                    <Input name="productName" value={this.state.productName} onChange={this.handleChange}></Input>
+                    <Input name="productName"></Input>
                     <Label>Product Image</Label>
-                    <Input type="file" onChange={this.handleFile}/>
+                    <Input name="img" type="file"/>
                     <Label>Price</Label>
-                    <Input name="productPrice" value={this.state.productPrice} onChange={this.handleChange}></Input>
+                    <Input name="productPrice"></Input>
                     <Label>Sale</Label>
-                    <Input name="sale" value={this.state.sale} onChange={this.handleChange}></Input>
-                    <Button type="button" onClick={this.createUI}>Add Custom</Button>
-                    <Button onClick={this.handleSubmit}>Submit</Button>
+                    <Input name="sale"></Input>
+                    <hr/>
+                    <Button type='submit'>Submit</Button>
                 </FormGroup>
             </Form>
         </Container>)

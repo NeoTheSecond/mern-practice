@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Route } from 'react-router-dom';
 import { Button } from 'reactstrap';
+import Designer from './Designer';
 import { Redirect } from 'react-router';
 const url = require('url');
 export default class Product extends React.Component {
@@ -47,6 +48,7 @@ export default class Product extends React.Component {
                     <h3>{this.state.product.price}</h3>
                     <h3>{this.state.product.sale}</h3>
                     <Button color="danger" onClick={this.handleDelete}>Delete</Button>
+                    <Designer/>
                 </div>
 
         )
