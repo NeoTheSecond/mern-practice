@@ -8,13 +8,6 @@ import {
   NavItem,
   NavLink,} from 'reactstrap';
 import {  BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
-import Home from './home';
-import Products from './products';
-import Faq from './faq';
-import Contact from './contact';
-import Login from './login';
-import Manage from './manage';
-import Product from './product';
 export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
@@ -32,7 +25,7 @@ export default class NavBar extends React.Component {
   }
   render() {
     return (
-     <Router>
+     // <Router>
          <div>
              <div>
                  <Navbar color="light" light expand="md">
@@ -62,18 +55,17 @@ export default class NavBar extends React.Component {
 
 
            <div>
-               <Switch>
+               {/* <Switch>
                    <Route exact path="/" component={Home}/>
                    <Route exact path="/products" component={Products}/>
                     <Route exact path="/products/:id" component={Product}/>
                    <Route path="/faq" component={Faq}/>
                    <Route path="/contact" component={Contact}/>
-                   {/* <Route path="/login" component={Login}/> */}
                    <Route path="/manage" component={Manage}/>
-               </Switch>
+               </Switch> */}
            </div>
          </div>
-     </Router>
+     // </Router>
     );
   }
 }

@@ -11,8 +11,11 @@ export default class Product extends React.Component {
         this.state = {
             product: {},
             redirectToReferrer: false,
+            deleteButton: false,
         }
         this.handleDelete = this.handleDelete.bind(this)
+        let logedin = OktaSignIn.session.get()
+        console.log(logedin);
     }
 
     handleDelete(){
@@ -36,6 +39,11 @@ export default class Product extends React.Component {
         )
             .catch(err => console.log('There has been some error: ' + err))
     }
+    deleteButton = () =>{
+        this.setState({
+            deleteButton: true
+        })
+    }
 
     render(){
         if (this.state.redirectToReferrer){
@@ -47,8 +55,9 @@ export default class Product extends React.Component {
                     <img src={this.state.product.pic}></img>
                     <h3>{this.state.product.price}</h3>
                     <h3>{this.state.product.sale}</h3>
-                    <Button color="danger" onClick={this.handleDelete}>Delete</Button>
-                    <Designer/>
+                    <hr/>
+                    { this.state.deleteButton && <Button color="danger" onClick={this.handleDelete}>Delete</Button> }
+                    {/* <Designer/> */}
                 </div>
 
         )
