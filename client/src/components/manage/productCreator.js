@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText, Container } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Container } from 'reactstrap';
 import axios from 'axios';
+import { Redirect } from 'react-router';
 export default class ProductCreator extends React.Component {
     constructor(props) {
         super(props)
@@ -9,22 +10,22 @@ export default class ProductCreator extends React.Component {
             productPrice: '',
             productImageURL: '',
             sale: '',
-            fileSelected: "",
             img: "",
+            redirectToReferrer: false,
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
     handleSubmit(event){
         event.preventDefault()
+        var url = "https://api.cloudinary.com/v1_1/giaphatocphamphu/image/upload";
         const formData = new FormData();
         formData.append("file", this.state.img);
         formData.append("upload_preset", "oxljmzfc"); // Replace the preset name with your own
         formData.append("api_key", "915351483667299"); // Replace API key with your own Cloudinary key
         formData.append("timestamp", (Date.now() / 1000) | 0);
-
         // Make an AJAX upload request using Axios (replace Cloudinary URL below with your own)
-        return axios.post("https://api.cloudinary.com/v1_1/giaphatocphamphu/image/upload", formData, {
+        return axios.post(url, formData, {
             headers: {
                 "X-Requested-With": "XMLHttpRequest"
             }
@@ -42,9 +43,9 @@ export default class ProductCreator extends React.Component {
             })
         })
         .then(res => {
-            if(res.status == 200){
-                alert('success')
-
+            if(res.status === 200){
+                alert('success');
+                this.setState({ redirectToReferrer: true});
             }
             else{
                 alert('failed')
@@ -63,6 +64,9 @@ export default class ProductCreator extends React.Component {
         }
     }
     render() {
+        if (this.state.redirectToReferrer){
+            return <Redirect push to='/products'/>;
+        }
         return (
             <Container>
             <Form onChange={this.handleChange} onSubmit={this.handleSubmit}>

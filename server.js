@@ -19,7 +19,7 @@ app.use(express.static('./public'))
 
 //connect to mongodb
 mongoose
-    .connect(db)
+    .connect(db, { useNewUrlParser: true })
     .then(() => console.log('Mongodb connected...'))
     .catch(err => console.log(err));
 

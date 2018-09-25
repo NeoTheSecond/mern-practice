@@ -2,8 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import ProductList from './productList';
 import { Container, ListGroup } from 'reactstrap';
-import Product from './product';
-import {  BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 export default class Products extends React.Component {
     constructor(props){
         super(props)
@@ -14,11 +12,16 @@ export default class Products extends React.Component {
     componentWillMount() {
         axios.get('/api/products')
             .then(res => this.setState({
-                products: res.data
+                products: res.data,
             }))
-
     }
+    // componentDidMount() {
+    //     if(this.state.product){
+    //         const link = '/products/' + this.state.product._id
+    //     }
+    // }
     render(){
+
         return(
             <Container>
                 <h1>these are the products</h1>

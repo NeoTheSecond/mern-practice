@@ -7,14 +7,12 @@ import {
   Nav,
   NavItem,
   NavLink,} from 'reactstrap';
-import {  BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 export default class NavBar extends React.Component {
   constructor(props) {
     super(props);
-
     this.toggle = this.toggle.bind(this);
     this.state = {
-        logedin: false,
         isOpen: false
     };
   }
@@ -48,6 +46,9 @@ export default class NavBar extends React.Component {
                        <NavItem>
                           <NavLink><Link to="/manage" >Manage</Link></NavLink>
                        </NavItem>
+                       {this.props.logedin && <NavItem>
+                          <NavLink><Link to="/manage/products" >Manage Products</Link></NavLink>
+                       </NavItem>}
                      </Nav>
                    </Collapse>
                  </Navbar>

@@ -1,26 +1,18 @@
 import React from 'react';
 import ProductCreator from './productCreator';
-import Test from './Test';
+// import Test from './Test';
 import {
-    Container,
-    ListGroup,
-    ListGroupItem,
-    Button,
-    Form,
-    FormGroup,
-    Label,
-    Input
+    Container
 } from 'reactstrap';
-import cloudinary from 'cloudinary';
-import Products from './products';
+import Products from '../products/products';
 export default class Manage extends React.Component {
     render(){
         return(
-            <div>
+            <Container>
                 <ProductCreator/>
                 {/* <Test/> */}
                 <Products/>
-            </div>
+            </Container>
         )
     }
 }

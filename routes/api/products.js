@@ -1,17 +1,36 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 // Product Model
 const Product = require('../../models/product');
 // GET api/product
 // get one product
 // access: public
 router.get('/:id', (req,res) => {
-    // const id = mongoose.Types.ObjectId(req.params.id)
     Product.findById(req.params.id)
         .then(product => res.json(product))
         .catch(err => console.log('There has been ERROR: ' + err))
 });
+
+router.patch('/:id', (req,res) => {
+    Product.findById(req.params.id, (err, product) => {
+        if (err){
+            console.log(err);
+        }else{
+            req.body.customizeOptions.forEach(customizeOption => {
+                product.customizeOptions = [...product.customizeOptions, customizeOption]
+            })
+            product.save((err, product) => {
+                if (err){
+                    console.log(err);
+                }else{
+                    res.json(product.customizeOptions);
+                }
+            })
+        }
+    })
+    .catch(err => console.log("There has been ERROR: " + err))
+
+})
 
 // GET api/products
 // get all products
@@ -19,6 +38,8 @@ router.get('/:id', (req,res) => {
 router.get('/', (req, res) => {
     Product.find()
         .then(products => res.json(products))
+        .catch(err => console.log("There has been ERROR: " + err))
+
 });
 
 // POST api/product
@@ -34,6 +55,8 @@ router.post('/', (req, res) => {
     });
 
     newProduct.save().then(product => res.json(product))
+    .catch(err => console.log("There has been ERROR: " + err))
+
 });
 
 // DELETE api/product

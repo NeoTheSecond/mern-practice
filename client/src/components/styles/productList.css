@@ -1,4 +1,12 @@
 img{
     width: 400px;
-    height: 200px;
+    height: 600px;
+}
+.container{
+    position: relative;
+    display: block;
+}
+
+.image{
+    position: absolute;
 }
