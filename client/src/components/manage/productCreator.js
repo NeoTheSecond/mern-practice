@@ -51,7 +51,7 @@ export default class ProductCreator extends React.Component {
                 alert('failed')
             }
         })
-}
+    }
     handleChange(event) {
         if(event.target.name !== "img"){
             this.setState({

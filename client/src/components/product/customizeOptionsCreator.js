@@ -123,16 +123,26 @@ export default class CustomizeOptionsCreator extends React.Component {
     //         </Form>
     // }
 
+    handleAddOption = e => {
+        this.setState({
+            addOption: true,
+        })
+    }
+
+
     render() {
 
         const customizeOptionsList = this.props.customizeOptions.map((customizeOption, index) =>
                 <ListGroup key={index}>
-                    <ListGroupItem><Input value={customizeOption.category} type="button" onClick={this.handlePick} key={index} customizeOption={customizeOption}></Input></ListGroupItem>
-                        {/* {customizeOption.options.map((option, index) =>
+                    <ListGroupItem><Input value={customizeOption.category} type="button" onClick={this.handlePick} key={index} customizeOption={customizeOption}></Input>
+                    <Button onClick={this.handleAddOption}>Add Option</Button>
+                        {this.state.addOption && <OptionsCreator customizeOptions={this.props.customizeOptions}/>}
+                        {customizeOption.options.map((option, index) =>
                             <ListGroupItem key={index}>
                                 <h2>{option.name}</h2>
                             </ListGroupItem>
-                        )} */}
+                        )}
+                    </ListGroupItem>
                     <hr/>
                 </ListGroup>
         );
