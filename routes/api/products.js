@@ -16,9 +16,7 @@ router.patch('/:id', (req,res) => {
         if (err){
             console.log(err);
         }else{
-            req.body.customizeOptions.forEach(customizeOption => {
-                product.customizeOptions = [...product.customizeOptions, customizeOption]
-            })
+            product.customizeOptions = req.body.customizeOptions
             product.save((err, product) => {
                 if (err){
                     console.log(err);

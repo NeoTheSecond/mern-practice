@@ -1,56 +1,68 @@
 import React from 'react';
-import { Container, ListGroup, ListGroupItem} from 'reactstrap';
+import { Container, ListGroup, ListGroupItem, Input, Button, ButtonGroup} from 'reactstrap';
 import {  BrowserRouter as Router } from 'react-router-dom';
 export default class CustomizeOptionsList extends React.Component {
     constructor(props){
         super(props)
         this.handlePick = this.handlePick.bind(this)
         this.state = {
-            customizeOptions: this.props,
+            customizeOptions: this.props.customizeOption,
             selectedCustomizeOptions: [],
         }
         this.handlePick = this.handlePick.bind(this)
     }
     handlePick(event){
-        // this.setState((prevState) => {
-        //     selectedCustomizeOptions: [...prevState.selectedCustomizeOptions, event.target.className]
-        // })
-        let selectedCustomizeOptions = [...selectedCustomizeOptions, event.target.className]
-        this.setState({
-            selectedCustomizeOptions: selectedCustomizeOptions
-        })
-
-        // this.setState({
-        //     selectedCustomizeOptions: event.target.className
-        // })
-        // this.setState((prevState) =>{
-        //     selectedCustomizeOptions: event.target.className
-        // })
-        // console.log(event.target.className);
-        // return <img src={this.state.selectedCustomizeOptions} className='image'></img>
-
+        event.preventDefault();
+        //name chính là category
+        let selectedCustomizeOption = this.state.selectedCustomizeOptions
+        if(this.state.selectedCustomizeOptions.length !== 0){
+            if (selectedCustomizeOption.filter(customizeOption => customizeOption.category === event.target.name ).length > 0){
+                selectedCustomizeOption.forEach(customizeOption => {
+                    if(customizeOption.category === event.target.name){
+                        customizeOption.option = event.target.value;
+                        customizeOption.img = event.target.id;
+                    }
+                })
+            }else{
+                selectedCustomizeOption.push({
+                    category: event.target.name,
+                    option: event.target.value,
+                    img: event.target.id
+                })
+            }
+        }else{
+            let selectedCustomizeOption = []
+            selectedCustomizeOption.push({
+                category: event.target.name,
+                option: event.target.value,
+                img: event.target.id
+            })
+        }
+        this.setState((prevState) => ({
+            selectedCustomizeOptions: [...prevState.selectedCustomizeOptions, selectedCustomizeOption]
+        }))
     }
     render(){
+        const optionsList = (options,category) => {
+            return options.map((option, index) => <Input key={index} type="button" value={option.name} name={category} onClick={this.handlePick} id={option.img}/>)
+        }
+
         const customizeOptionList = this.props.customizeOption.map((customizeOption, index) =>
             <ListGroup key={index}>
-                <ListGroupItem><input value={customizeOption.name} className={customizeOption.pic} type="button" onClick={this.handlePick} key={index}></input></ListGroupItem>
-                <hr/>
+                <ListGroupItem><Input type="button" value={customizeOption.category}/></ListGroupItem>
+                {optionsList(customizeOption.options, customizeOption.category)}
             </ListGroup>
         );
+        let selectedCustomizeOptions = this.state.selectedCustomizeOptions.map((customizeOption, index) =>
+            <img key={index} src={customizeOption.img} className="image"/>
+        )
         return(
                 <Container>
                     <h1>these are the customize options</h1>
                     {customizeOptionList}
                     <Container className="container">
                         <img src={this.props.baseProduct} className="image"></img>
-                        <img src={this.state.selectedCustomizeOptions} className='image'></img>
-                        {/* {this.state.selectedCustomizeOptions.map((customizeOption, index) => {
-                            return(
-                                <img src={this.state.selectedCustomizeOptions} className='image' key={index}></img>
-                            )
-                        })} */}
-                        {/* <img src={Songoku} className='image'></img>
-                        <img src={SleveLeftBlue} className='image'></img> */}
+                        {selectedCustomizeOptions}
                     </Container>
                 </Container>
         )

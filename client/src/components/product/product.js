@@ -12,6 +12,7 @@ export default class Product extends React.Component {
             product: {},
             redirectToReferrer: false,
             logedin: false,
+            edit: false,
         }
     }
 
@@ -42,6 +43,11 @@ export default class Product extends React.Component {
             })
         }
     }
+    handleEdit = () => {
+        this.setState((prevState) => ({
+            edit: !prevState.edit
+        }))
+    }
     // const customizeOption = (customizeOptions) => {
     //     <Container>
     //         <h1></h1>
@@ -61,9 +67,10 @@ export default class Product extends React.Component {
 
                     {/* { this.state.logedin && <Button color="danger" onClick={this.handleDelete}>Delete</Button> } */}
                     {/* { this.state.logedin && <CustomizeOptionsCreator match={this.props.match}/> } */}
-                    {/* { this.state.product.customizeOptions && <CustomizeOptionsList customizeOption={this.state.product.customizeOptions} baseProduct={this.state.product.pic}/>} */}
+                    { this.state.product.customizeOptions && <CustomizeOptionsList customizeOption={this.state.product.customizeOptions} baseProduct={this.state.product.pic}/>}
                     <Container>
-                        { this.state.logedin && <ProductEdit match={this.props.match} product={this.state.product}/> }
+                        <Button onClick={this.handleEdit}>Edit</Button>
+                        { this.state.logedin && this.state.edit && <ProductEdit match={this.props.match} product={this.state.product}/> }
                     </Container>
                     {/* <Designer/> */}
                 </div>
